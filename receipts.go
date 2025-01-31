@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
 	"os/exec"
@@ -22,12 +21,12 @@ func ProcessReceipt(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// TODO: REMOVE
-	marshaled, err := json.MarshalIndent(receipt, "", "   ")
+	// get points total for receipt
+	totalPoints, err := Process(receipt)
 	if err != nil {
-		log.Fatalf("marshaling error: %s", err)
+		http.Error(w, "The receipt is invalid.", http.StatusBadRequest)
+		return
 	}
-	fmt.Println(string(marshaled))
 
 	// create unique ID to assign to receipt
 	byteID, err := exec.Command("uuidgen").Output()
@@ -37,8 +36,8 @@ func ProcessReceipt(w http.ResponseWriter, r *http.Request) {
 
 	id := strings.TrimSpace(string(byteID))
 
-	// TODO add actual points
-	AllReceipts[id] = 100
+	// add new id and total points earned to the map
+	AllReceipts[id] = totalPoints
 
 	resp := createReceiptResponse{
 		ID: id,
