@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"math"
 	"strconv"
 	"strings"
@@ -22,7 +21,7 @@ import (
 
 // get total number of points for a receipt
 func Process(r Receipt) (int, error) {
-	totalPoints := 100
+	totalPoints := 0
 
 	totalPoints += nameCharacters(r)
 
@@ -54,7 +53,6 @@ func Process(r Receipt) (int, error) {
 
 	afternoonPoints, err := afternoonPurchase(r)
 	if err != nil {
-		fmt.Println("ERROR: ", err)
 		return 0, err
 	}
 	totalPoints += afternoonPoints
@@ -108,7 +106,7 @@ func quarterTotal(r Receipt) (int, error) {
 
 // 5 points for every two items on the receipt.
 func pairItems(r Receipt) int {
-	return len(r.Items) / 2
+	return (len(r.Items) / 2) * 5
 }
 
 // If the trimmed length of the item description is a multiple of 3,
