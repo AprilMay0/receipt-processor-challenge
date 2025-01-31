@@ -87,6 +87,7 @@ func nameCharacters(r Receipt) int {
 func roundTotal(r Receipt) (int, error) {
 	total, err := strconv.ParseFloat(r.Total, 64)
 	if err != nil {
+		logger.Printf("Error trying to parse float for Total: %v", err)
 		return 0, err
 	}
 
@@ -101,6 +102,7 @@ func roundTotal(r Receipt) (int, error) {
 func quarterTotal(r Receipt) (int, error) {
 	total, err := strconv.ParseFloat(r.Total, 64)
 	if err != nil {
+		logger.Printf("Error trying to parse float for Total: %v", err)
 		return 0, err
 	}
 
@@ -128,6 +130,7 @@ func itemDescriptions(r Receipt) (int, error) {
 		if descLen%3 == 0 {
 			price, err := strconv.ParseFloat(item.Price, 64)
 			if err != nil {
+				logger.Printf("Error trying to parse float for item Price: %v", err)
 				return 0, err
 			}
 
@@ -142,6 +145,7 @@ func itemDescriptions(r Receipt) (int, error) {
 func oddDate(r Receipt) (int, error) {
 	date, err := time.Parse(time.DateOnly, r.PurchaseDate)
 	if err != nil {
+		logger.Printf("Error trying to parse date for PurchaseDate: %v", err)
 		return 0, err
 	}
 
@@ -156,16 +160,19 @@ func afternoonPurchase(r Receipt) (int, error) {
 	timeFormat := "15:04"
 	purchaseTime, err := time.Parse(timeFormat, r.PurchaseTime)
 	if err != nil {
+		logger.Printf("Error trying to parse date for PurchaseTime: %v", err)
 		return 0, err
 	}
 
 	start, err := time.Parse(timeFormat, "14:00")
 	if err != nil {
+		logger.Printf("Error trying to parse date for PurchaseTime start window: %v", err)
 		return 0, err
 	}
 
 	end, err := time.Parse(timeFormat, "16:00")
 	if err != nil {
+		logger.Printf("Error trying to parse date for PurchaseTime end window: %v", err)
 		return 0, err
 	}
 
