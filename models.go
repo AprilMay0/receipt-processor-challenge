@@ -16,9 +16,9 @@ type Receipt struct {
 
 // Response structs
 type createReceiptResponse struct {
-	ID string
+	ID string `json:"id"`
 }
 
 type getPointsResponse struct {
-	Points int
+	Points int `json:"points"`
 }
