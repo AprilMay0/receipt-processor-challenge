@@ -45,11 +45,7 @@ func GetReceipt(w http.ResponseWriter, r *http.Request) {
 
 	// if receipt with id doesn't exist, return with NotFound status
 	if !ok {
-		w.WriteHeader(http.StatusNotFound)
-		response := ErrorResp{Status: http.StatusNotFound, Message: "Receipt not found"}
-		if err := json.NewEncoder(w).Encode(response); err != nil {
-			logger.Printf("Error encoding response in GetReceipt")
-		}
+		http.Error(w, "Receipt not found", http.StatusNotFound)
 		return
 	}
 
@@ -68,9 +64,4 @@ type createReceiptResponse struct {
 
 type getPointsResponse struct {
 	Points int
-}
-
-type ErrorResp struct {
-	Status  int    `json:"status"`
-	Message string `json:"message"`
 }
