@@ -60,7 +60,8 @@ func Process(r Receipt) (int, error) {
 	return totalPoints, nil
 }
 
-// funcs for each condition
+// funcs for each rule
+
 // One point for every alphanumeric character in the retailer name.
 func nameCharacters(r Receipt) int {
 	charCount := 0
@@ -137,10 +138,10 @@ func oddDate(r Receipt) (int, error) {
 		return 0, err
 	}
 
-	if date.Day()%2 == 0 {
-		return 0, nil
+	if date.Day()%2 == 1 {
+		return 6, nil
 	}
-	return 6, nil
+	return 0, nil
 }
 
 // 10 points if the time of purchase is after 2:00pm and before 4:00pm.
