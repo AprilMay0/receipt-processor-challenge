@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 	"os/exec"
 	"strings"
@@ -31,7 +30,9 @@ func ProcessReceipt(w http.ResponseWriter, r *http.Request) {
 	// create unique ID to assign to receipt
 	byteID, err := exec.Command("uuidgen").Output()
 	if err != nil {
-		log.Fatal(err)
+		http.Error(w, "Internal error", http.StatusInternalServerError)
+		logger.Printf("Error creating receipt ID: %v", err)
+		return
 	}
 
 	id := strings.TrimSpace(string(byteID))

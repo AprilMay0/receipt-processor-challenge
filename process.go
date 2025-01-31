@@ -23,34 +23,43 @@ import (
 func Process(r Receipt) (int, error) {
 	totalPoints := 0
 
+	// One point for every alphanumeric character in the retailer name.
 	totalPoints += nameCharacters(r)
 
+	// 50 points if the total is a round dollar amount with no cents.
 	roundTotalPoints, err := roundTotal(r)
 	if err != nil {
 		return 0, err
 	}
 	totalPoints += roundTotalPoints
 
+	// 25 points if the total is a multiple of 0.25.
 	quarterTotalPoints, err := quarterTotal(r)
 	if err != nil {
 		return 0, err
 	}
 	totalPoints += quarterTotalPoints
 
+	// 5 points for every two items on the receipt.
 	totalPoints += pairItems(r)
 
+	// If the trimmed length of the item description is a multiple of 3,
+	// multiply the price by 0.2 and round up to the nearest integer.
+	// The result is the number of points earned.
 	itemDescPoints, err := itemDescriptions(r)
 	if err != nil {
 		return 0, err
 	}
 	totalPoints += itemDescPoints
 
+	// 6 points if the day in the purchase date is odd.
 	oddDatePoints, err := oddDate(r)
 	if err != nil {
 		return 0, err
 	}
 	totalPoints += oddDatePoints
 
+	// 10 points if the time of purchase is after 2:00pm and before 4:00pm.
 	afternoonPoints, err := afternoonPurchase(r)
 	if err != nil {
 		return 0, err
@@ -59,8 +68,6 @@ func Process(r Receipt) (int, error) {
 
 	return totalPoints, nil
 }
-
-// funcs for each rule
 
 // One point for every alphanumeric character in the retailer name.
 func nameCharacters(r Receipt) int {

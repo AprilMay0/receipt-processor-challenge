@@ -36,6 +36,6 @@ func httpLogger(fn func(w http.ResponseWriter, r *http.Request)) func(w http.Res
 		start := time.Now()
 		logger.Printf("Starting %s %s", r.Method, r.URL.Path)
 		fn(w, r)
-		log.Printf("Completed in %v (%s %s)", time.Since(start), r.Method, r.URL.Path)
+		logger.Printf("Completed in %v (%s %s)", time.Since(start), r.Method, r.URL.Path)
 	}
 }
